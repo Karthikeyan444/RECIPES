@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .colorful-button {
+            background-color: orange;
+            border-radius: 10px;
+            margin-left: 60px;
+            font-family: Lucida Console, Monaco, monospace;
+        }
+        .go-button {
+            background-color: orange;
+            border-radius: 10px;
+            font-family: Lucida Console, Monaco, monospace;
+            margin-left: 100px;
+        }
+        .form-inline {
+            display: flex;
+            justify-content: center;
+            margin-top: 100px;
+        }
+        .tap{
+            margin-top:50px;
+        }
+        .form-inline input {
+            width: 300px;
+            margin-right: 10px;
+        }
+        .recipe-container {
+            margin: 10px auto;
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid" style="font-family: TaHoma;">
+        <h2 class="ml-5" style="font-family: Lucida Console, Monaco, monospace; margin-top:5px; color:orange;">MY RECIPES</h2>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav" style="margin-left:500px; font-size:16px;">
+                <a class="nav-link active" aria-current="page" href="{% url 'homepage' %}"><button class="colorful-button">HOME</button></a>
+                <a class="nav-link active" aria-current="page" href="{% url 'register' %}"><button class="colorful-button">USER</button></a>
+                <a class="nav-link active" aria-current="page" href="{% url 'recipe_list' %}"><button class="colorful-button">RECIPES</button></a>
+                <a class="nav-link active" aria-current="page" href="{% url 'con1' %}"><button class="colorful-button">CONTACT</button></a>
+
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="form-inline">
+    <div class="form-overlay">
+        <form method="GET" action="{% url 'recipe_list' %}">
+            <div class="title-overlay">
+                <h1 style="margin-left:50px; font-size:50px;">RECIPES..</h1><br>
+            </div>
+            <input type="text" name="q" class="form-control" placeholder="Search for recipes...">
+            <button type="submit" class="btn go-button" style="margin-top:10px;">Search</button>
+        </form>
+    </div>
+</div>
+
+<div class="recipe-container">
+    {% if recipes %}
+        {% for recipe in recipes %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ recipe.title }}</h5>
+                    {% if recipe.image %}
+                        <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                    {% endif %}
+                    <p class="card-text"><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+                    <p class="card-text"><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+                    <p class="card-text"><strong>Average Rating:</strong> {{ recipe.average_rating|floatformat:1 }}</p>
+
+                </div>
+            </div>
+        {% endfor %}
+    {% elif recipes is not None %}
+        <p class="tap" style="margin-left:380px;">No recipes found.</p>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
